@@ -68,7 +68,7 @@ export async function yedekYukle(file: File) {
       : k.pdf
         ? [{ id: crypto.randomUUID(), ad: k.pdfAd ?? "belge.pdf", blob: await toBlob(k.pdf) }]
         : [];
-    await kaydet(normalize({ id: k.id, ad: k.ad, tc: k.tc, plaka: k.plaka, olusturma: k.olusturma, pdfler }));
+    await kaydet(normalize({ id: k.id, ad: k.ad ?? "", tc: k.tc ?? "", plaka: k.plaka ?? "", olusturma: k.olusturma ?? Date.now(), pdfler }));
   }
   return data.length;
 }
