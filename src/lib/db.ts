@@ -59,15 +59,16 @@ export async function yedekAl() {
 }
 
 export async function yedekYukle(file: File) {
-  const data = JSON.parse(await file.text()) as (EskiKayit & { pdf?: string; pdfler?: { id: string; ad: string; blob: string }[] })[];
+  type Y = { id: string; ad?: string; tc?: string; plaka?: string; olusturma?: number; pdfAd?: string; pdf?: string; pdfler?: { id: string; ad: string; blob: string }[] };
+  const data = JSON.parse(await file.text()) as Y[];
   for (const k of data) {
     const toBlob = async (s: string) => (await fetch(s)).blob();
     const pdfler = k.pdfler
       ? await Promise.all(k.pdfler.map(async (p) => ({ ...p, blob: await toBlob(p.blob) })))
       : k.pdf
-        ? [{ id: crypto.randomUUID(), ad: k.pdfAd ?? "belge.pdf", blob: await toBlob(k.pdf as unknown as string) }]
+        ? [{ id: crypto.randomUUID(), ad: k.pdfAd ?? "belge.pdf", blob: await toBlob(k.pdf) }]
         : [];
-    await kaydet(normalize({ ...k, pdf: undefined, pdfler } as EskiKayit));
+    await kaydet(normalize({ id: k.id, ad: k.ad, tc: k.tc, plaka: k.plaka, olusturma: k.olusturma, pdfler }));
   }
   return data.length;
 }
