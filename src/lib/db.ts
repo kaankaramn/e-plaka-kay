@@ -3,8 +3,8 @@ export type Kayit = {
   ad: string;
   tc: string;
   plaka: string;
-  pdfAd?: string;
-  pdf?: Blob;
+  pdfAd?: string | undefined;
+  pdf?: Blob | undefined;
   olusturma: number;
 };
 
